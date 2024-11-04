@@ -6,35 +6,25 @@ interface DrawerMenuProps {
   visible: boolean;
   productInput: string;
   setProductInput: React.Dispatch<React.SetStateAction<string>>;
+  onClose: () => void;
 }
 
 const DrawerMenu: React.FC<DrawerMenuProps> = ({
   visible,
   productInput,
   setProductInput,
+  onClose,
 }) => {
   return (
     <div className={styles.containerStyle}>
       <Drawer
-        title="Adicionar Produto"
-        placement="right"
+        title="Procurar Produto"
+        placement="bottom"
         closable={true}
         open={visible}
-        getContainer={false}
+        onClose={onClose}
+        height="20%"
       >
-        <Button
-          type="primary"
-          style={{
-            color: "#FFF",
-            borderColor: "#556B2F",
-            background: "#556B2F",
-            width: "100%",
-            marginBottom: "16px",
-          }}
-        >
-          Adicionar produto
-        </Button>
-
         <Input
           placeholder="Digite o nome do produto"
           value={productInput}

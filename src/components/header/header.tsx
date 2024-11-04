@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Layout, Input, Button } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  SearchOutlined,
+  PlusCircleFilled,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import styles from "./headerStyle.module.scss";
 import coffe_logo from "../../assets/images/cafe.png";
 import DrawerMenu from "../drawer/drawer";
@@ -8,10 +13,13 @@ const { Header } = Layout;
 
 const HeaderComponent: React.FC = () => {
   const [productInput, setProductInput] = useState<string>("");
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState<boolean>(false);
 
-  const toggleDrawer = () => {
-    visible ? setVisible(false) : setVisible(true);
+  const toggleInput = () => {
+    setVisible(!visible);
+  };
+  const handleDrawerClose = () => {
+    setVisible(false);
   };
 
   return (
@@ -35,18 +43,26 @@ const HeaderComponent: React.FC = () => {
           value={productInput}
           style={{
             marginLeft: "16px",
-            width: "60%",
             borderColor: "#556B2F",
             color: "#A1887F",
+            width: 200
           }}
         />
       </div>
-      <DrawerMenu
-        visible={visible}
-        productInput={productInput}
-        setProductInput={setProductInput}
-      />
-      <MenuOutlined onClick={toggleDrawer} className={styles.setDrawer} />
+      <div className={styles.setDrawer}>
+        <PlusCircleFilled className={styles.headerIcon} />
+        <SearchOutlined
+          className={styles.headerIcon}
+          onClick={toggleInput}
+          id={styles.search}
+        />
+        <DrawerMenu
+          visible={visible}
+          productInput={productInput}
+          setProductInput={setProductInput}
+          onClose={handleDrawerClose}
+        />
+      </div>
     </Header>
   );
 };
