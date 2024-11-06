@@ -1,0 +1,75 @@
+.productSelectionContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  position: relative;
+}
+
+.cakeContainer,
+.drinkContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
+  position: relative;
+  color: #fff;
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  cursor: pointer;
+}
+
+.cakeContainer .backgroundImage {
+  background-image: url("../../assets/images/cake_bg.jpg");
+}
+
+.drinkContainer .backgroundImage {
+  background-image: url("../../assets/images/cappucino_bg.jpeg");
+}
+
+.blurEffect {
+    filter: blur(10px);
+    transition: filter 0.5s ease;
+}
+
+.backgroundImage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+}
+
+.cakeContainer h1,
+.drinkContainer h1 {
+  position: relative;
+  z-index: 2;
+  font-size: 2rem;
+}
+
+.centerText {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 3;
+  color: #fff;
+  text-align: center;
+}
