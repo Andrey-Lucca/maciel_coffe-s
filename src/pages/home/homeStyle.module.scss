@@ -17,7 +17,8 @@
 @media (max-width: 768px) {
     .drinksScreen{
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-    }
+        margin: 1rem 0 0 0;
+        justify-content: flex-start;
+    }   
 }

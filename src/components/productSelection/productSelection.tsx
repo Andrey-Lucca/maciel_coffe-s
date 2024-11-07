@@ -10,8 +10,8 @@ type ProductSelectionProps = {
 const ProductSelection: React.FC<ProductSelectionProps> = ({
   onSelectScreen,
 }) => {
-  const [isDrinkHovered, setIsDrinkHovered] = useState<boolean>(false);
-  const [isCakeHovered, setIsCakeHovered] = useState<boolean>(false);
+  const [isDrinkHovered, setIsDrinkHovered] = useState<boolean>(true);
+  const [isCakeHovered, setIsCakeHovered] = useState<boolean>(true);
 
   const handleItemMouseEnter = (item: string): void => {
     console.log("Item =>", item);

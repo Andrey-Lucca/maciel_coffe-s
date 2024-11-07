@@ -24,7 +24,7 @@ const Card: React.FC = () => {
         </div>
         <h1 className={classNames(globalStyles.titleText)}>
           Cappucino{" "}
-          <span className={classNames(globalStyles.bodyText)}>- R$ 15,00</span>
+          <span className={classNames(globalStyles.bodyText)} id={styles.price}>- R$ 15,00</span>
         </h1>
         <div className={styles.row}></div>
         <div className={styles.description}>
