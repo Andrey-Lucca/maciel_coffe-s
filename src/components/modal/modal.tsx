@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import globalStyles from "../../global/styles/globalStyles.module.scss";
-import { Input, Modal, Select, ConfigProvider } from "antd";
+import { Input, Modal, Select, ConfigProvider, message } from "antd";
 import { addProduct } from "../../global/requisitions";
 type ModalProps = {
   isModalOpen: boolean;
@@ -29,11 +29,37 @@ const ModalProduct: React.FC<ModalProps> = ({
     setIsModalOpen(false);
   };
 
+  const setItemsEmpty = (): void => {
+    setNome("");
+    setFoto("");
+    setDescricao("");
+    setPreco(undefined);
+    setIdCategoria(undefined);
+  };
+
+  const isFormValid =
+    nome.trim() !== "" &&
+    foto.trim() !== "" &&
+    descricao.trim() !== "" &&
+    preco !== undefined &&
+    idCategoria !== undefined;
+
   const handleProduct = async (): Promise<void> => {
-    //console.log({ nome, foto, descricao, preco, idCategoria });
-    await addProduct(nome, foto, descricao, preco, idCategoria)
-    console.log("Dados enviados!");
-      setIsModalOpen(false);
+    const response = await addProduct(
+      nome,
+      foto,
+      descricao,
+      preco,
+      idCategoria
+    );
+    if (response.status !== 201) {
+      message.error("Algo deu errado ao adicionar seu produto");
+      return;
+    }
+    message.success("Produto adicionado");
+    setItemsEmpty();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsModalOpen(false);
   };
 
   return (
@@ -53,6 +79,7 @@ const ModalProduct: React.FC<ModalProps> = ({
         onCancel={handleCancel}
         className={globalStyles.modal}
         onOk={handleProduct}
+        okButtonProps={{ disabled: !isFormValid }}
       >
         <div className={globalStyles.inputs}>
           <Input

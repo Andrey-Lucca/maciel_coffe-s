@@ -1,5 +1,5 @@
 import axios from "axios";
-const URL = process.env.REACT_APP_API_URL;
+const URL = `${process.env.REACT_APP_API_URL}`;
 const KEY = process.env.REACT_APP_SECRET_KEY;
 
 export const addProduct = async (
@@ -9,7 +9,6 @@ export const addProduct = async (
   preco: number | undefined,
   idCategoria: number | undefined
 ): Promise<any> => {
-  console.log({ nome, foto, descricao, preco, idCategoria });
   const bodyData = {
     nome,
     foto,
@@ -19,14 +18,16 @@ export const addProduct = async (
     token: KEY,
   };
 
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    Accept: "application/json",
+  };
+
   try {
-    const response = await axios.post(`${URL}`, bodyData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await axios.post(URL, bodyData, {
+      headers
     });
-    console.log("Produto adicionado com sucesso!", response.data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return response;
   } catch (error) {
     console.error("Erro ao adicionar o produto:", error);
   }
