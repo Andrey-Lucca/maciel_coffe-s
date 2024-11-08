@@ -117,7 +117,7 @@ const ModalProduct: React.FC<ModalProps> = ({
             name="description"
             id="description"
             maxLength={100}
-            placeholder="Digite uma breve descrição do produto (Max = 100)"
+            placeholder="Digite uma breve descrição do produto (Max = 50)"
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
           ></textarea>
