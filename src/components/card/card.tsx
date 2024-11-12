@@ -67,8 +67,11 @@ const CardProduct: React.FC<ProductsType> = ({
   };
 
   const handleDelete = async () => {
-    console.log("Deletar")
     const response = await deleteProduct(idProduto);
+    if (response.status !== 204) {
+      message.error("Não foi possível deletar o produto");
+      return;
+    }
     message.success("Produto deletado");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     refreshProducts();

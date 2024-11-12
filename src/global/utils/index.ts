@@ -16,8 +16,8 @@ export const addProduct = async (
   nome: string,
   foto: string,
   descricao: string,
-  preco: number | undefined,
-  idCategoria: number | undefined
+  preco: number | undefined | string,
+  idCategoria: number | undefined | string
 ): Promise<any> => {
   const bodyData = {
     nome,
@@ -64,12 +64,14 @@ export const editProduct = async (product: ProductsType): Promise<any> => {
     preco: product.preco,
     descricao: product.descricao,
   };
+
   const idProduto = product.idProduto;
 
-  const data = {
-    idProduto,
-    produto,
-  };
+  const produtoJson = JSON.stringify(produto);
+
+  const data = new URLSearchParams();
+  data.append("idProduto", idProduto.toString());
+  data.append("produto", produtoJson);
 
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -77,23 +79,25 @@ export const editProduct = async (product: ProductsType): Promise<any> => {
   };
 
   try {
-    const response = await axios.put(`${URL}?token=${KEY}`, data, { headers });
-    return response.data;
+    const response = await axios.put(`${URL}?token=${KEY}`, data.toString(), {
+      headers,
+    });
+
+    return response;
   } catch (error) {
     console.error("Error updating product:", error);
   }
 };
 
-export const deleteProduct = async (idProduto: string): Promise<void> => {
+export const deleteProduct = async (idProduto: string): Promise<any> => {
   const urlDelete = `${URL.trim()}?token=${KEY}&idProduto=${idProduto}`;
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
   };
-  console.log(urlDelete);
 
   try {
-    const response = await axios.delete(urlDelete, {headers});
-    return response.data;
+    const response = await axios.delete(urlDelete, { headers });
+    return response;
   } catch (error) {
     console.error("Error deleting product:", error);
   }

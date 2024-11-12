@@ -74,32 +74,41 @@ const ModalProduct: React.FC<ModalProps> = ({
         descricao,
         foto,
         preco: `${preco}`,
-        idCategoria:`${idCategoria}`,
+        idCategoria: `${idCategoria}`,
         token: productsInfo.token,
-        idProduto: productsInfo.idProduto
+        idProduto: productsInfo.idProduto,
+      };
+      const response = await editProduct(productObjectEdit);
+      if(response.status !== 204){
+        message.error("Não foi possível atualizar o produto");
+        return;
       }
-      editProduct(productObjectEdit);
+      message.success("Produto atualizado com sucesso");
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      setIsModalOpen(false);
+      refreshProducts();
+      return
     }
-    // const response = await addProduct(
-    //   nome,
-    //   foto,
-    //   descricao,
-    //   preco,
-    //   idCategoria
-    // );
-    // if (response.status !== 201) {
-    //   message.error("Algo deu errado ao adicionar seu produto");
-    //   return;
-    // }
-    // message.success("Produto adicionado");
-    // setItemsEmpty();
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // setIsModalOpen(false);
-    // refreshProducts();
+    const response = await addProduct(
+      nome,
+      foto,
+      descricao,
+      preco,
+      idCategoria
+    );
+    if (response.status !== 201) {
+      message.error("Algo deu errado ao adicionar seu produto");
+      return;
+    }
+    message.success("Produto adicionado");
+    setItemsEmpty();
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    setIsModalOpen(false);
+    refreshProducts();
   };
 
   const seeProducts = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     setIsModalOpen(false);
     refreshProducts();
   };
