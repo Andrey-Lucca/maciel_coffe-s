@@ -18,11 +18,12 @@ type ProductsType = {
 type ProductsProps = {
   loading: boolean;
   products: ProductsType[];
+  productInput: string;
   refreshProducts: () => void;
 
 };
 
-const Products: React.FC<ProductsProps> = ({loading, products, refreshProducts}) => {
+const Products: React.FC<ProductsProps> = ({loading, products, productInput, refreshProducts}) => {
 
   const handleProducts = async () => {
     return await getProducts();

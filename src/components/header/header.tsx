@@ -8,13 +8,16 @@ import ModalProduct from "../modal/modal";
 const { Header } = Layout;
 
 type HeaderComponentProps = {
+  productInput: string;
+  setProductInput: (word: string) => void;
   refreshProducts: () => void;
 };
 
 const HeaderComponent: React.FC<HeaderComponentProps> = ({
+  productInput,
+  setProductInput,
   refreshProducts,
 }) => {
-  const [productInput, setProductInput] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -28,6 +31,10 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
 
   const showModal = (): void => {
     setIsModalOpen(true);
+  };
+
+  const handleSearchProduct = (word: string) => {
+    setProductInput(word);
   };
 
   return (
@@ -56,6 +63,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
             color: "#A1887F",
             width: 200,
           }}
+          onChange={(e) => handleSearchProduct(e.target.value)}
         />
       </div>
       <div className={styles.setDrawer}>
@@ -68,7 +76,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
         <DrawerMenu
           visible={visible}
           productInput={productInput}
-          setProductInput={setProductInput}
+          setProductInput={handleSearchProduct}
           onClose={handleDrawerClose}
         />
       </div>

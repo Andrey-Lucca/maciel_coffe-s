@@ -5,6 +5,7 @@ import styles from "./cardStyles.modules.scss";
 import noPhoto from "../../assets/images/no_photo.png";
 import ModalProduct from "../modal/modal";
 import { deleteProduct } from "../../global/utils";
+import he from 'he';
 const { Meta } = Card;
 
 type ProductsType = {
@@ -128,7 +129,7 @@ const CardProduct: React.FC<ProductsType> = ({
                   lineHeight: 1.1,
                 }}
               >
-                <div>{nome}</div>
+                <div>{he.decode(nome)}</div>
                 <div>{precoFormatado}</div>
               </div>
             }
@@ -145,7 +146,7 @@ const CardProduct: React.FC<ProductsType> = ({
                   lineHeight: 1,
                 }}
               >
-                {descricao}
+                {he.decode(descricao)}
               </div>
             }
             style={{ height: 100 }}

@@ -5,7 +5,7 @@ import styles from "./drawerStyle.module.scss";
 interface DrawerMenuProps {
   visible: boolean;
   productInput: string;
-  setProductInput: React.Dispatch<React.SetStateAction<string>>;
+  setProductInput: (word: string) => void;
   onClose: () => void;
 }
 
