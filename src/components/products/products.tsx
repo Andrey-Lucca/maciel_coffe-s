@@ -20,11 +20,14 @@ type ProductsProps = {
   products: ProductsType[];
   productInput: string;
   refreshProducts: () => void;
-
 };
 
-const Products: React.FC<ProductsProps> = ({loading, products, productInput, refreshProducts}) => {
-
+const Products: React.FC<ProductsProps> = ({
+  loading,
+  products,
+  productInput,
+  refreshProducts,
+}) => {
   const handleProducts = async () => {
     return await getProducts();
   };
@@ -50,49 +53,41 @@ const Products: React.FC<ProductsProps> = ({loading, products, productInput, ref
           <div className={styles.cakeContainer}>
             <h1>BOLOS</h1>
             <div className={styles.cardsContainer}>
-              {products.map((product) => {
-                return (
-                  <>
-                    {product.idCategoria === "1" && (
-                      <CardProduct
-                        key={product.idProduto}
-                        idProduto={product.idProduto}
-                        nome={product.nome}
-                        descricao={product.descricao}
-                        preco={product.preco}
-                        foto={product.foto}
-                        token={product.token}
-                        idCategoria={product.idCategoria}
-                        refreshProducts={refreshProducts}
-                      />
-                    )}
-                  </>
-                );
-              })}
+              {products
+                .filter((product) => product.idCategoria === "1")
+                .map((product) => (
+                  <CardProduct
+                    key={product.idProduto}
+                    idProduto={product.idProduto}
+                    nome={product.nome}
+                    descricao={product.descricao}
+                    preco={product.preco}
+                    foto={product.foto}
+                    token={product.token}
+                    idCategoria={product.idCategoria}
+                    refreshProducts={refreshProducts}
+                  />
+                ))}
             </div>
           </div>
           <div className={styles.drinksContainer}>
             <h1>BEBIDAS</h1>
             <div className={styles.cardsContainer}>
-              {products.map((product) => {
-                return (
-                  <>
-                    {product.idCategoria === "2" && (
-                      <CardProduct
-                        key={product.idProduto}
-                        idProduto={product.idProduto}
-                        nome={product.nome}
-                        descricao={product.descricao}
-                        preco={product.preco}
-                        foto={product.foto}
-                        token={product.token}
-                        idCategoria={product.idCategoria}
-                        refreshProducts={refreshProducts}
-                      />
-                    )}
-                  </>
-                );
-              })}
+              {products
+                .filter((product) => product.idCategoria === "2")
+                .map((product) => (
+                  <CardProduct
+                    key={product.idProduto}
+                    idProduto={product.idProduto}
+                    nome={product.nome}
+                    descricao={product.descricao}
+                    preco={product.preco}
+                    foto={product.foto}
+                    token={product.token}
+                    idCategoria={product.idCategoria}
+                    refreshProducts={refreshProducts}
+                  />
+                ))}
             </div>
           </div>
         </>

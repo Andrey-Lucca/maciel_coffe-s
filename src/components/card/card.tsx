@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Card, ConfigProvider, message } from "antd";
+import { Card, ConfigProvider, message, Modal } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import styles from "./cardStyles.modules.scss";
+import globalStyles from "../../global/styles/globalStyles.module.scss";
 import noPhoto from "../../assets/images/no_photo.png";
 import ModalProduct from "../modal/modal";
 import { deleteProduct } from "../../global/utils";
-import he from 'he';
+import he from "he";
 const { Meta } = Card;
 
 type ProductsType = {
@@ -41,9 +42,18 @@ const CardProduct: React.FC<ProductsType> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [productsInfo, setProductsInfo] = useState<ProductEdit | null>(null);
+  const [modalConfirm, setModalConfirm] = useState<boolean>(false);
 
   const showModal = (): void => {
     setIsModalOpen(true);
+  };
+
+  const handleModalConfirmOpen = (): void => {
+    setModalConfirm(true);
+  };
+
+  const handleModalConfirmCancel = (): void => {
+    setModalConfirm(false);
   };
 
   const precoFormatado = parseFloat(preco).toLocaleString("pt-BR", {
@@ -73,6 +83,7 @@ const CardProduct: React.FC<ProductsType> = ({
       message.error("Não foi possível deletar o produto");
       return;
     }
+    handleModalConfirmCancel();
     message.success("Produto deletado");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     refreshProducts();
@@ -115,7 +126,7 @@ const CardProduct: React.FC<ProductsType> = ({
               key="delete"
               id={styles.delete}
               style={{ color: "#7B0000", fontWeight: 600 }}
-              onClick={handleDelete}
+              onClick={handleModalConfirmOpen}
             />,
           ]}
         >
@@ -159,6 +170,13 @@ const CardProduct: React.FC<ProductsType> = ({
         refreshProducts={refreshProducts}
         edit={true}
         productsInfo={productsInfo}
+      />
+      <Modal
+        title="Deseja realmente excluir esse produto?"
+        onOk={handleDelete}
+        onCancel={handleModalConfirmCancel}
+        open={modalConfirm}
+        className={globalStyles.modal}
       />
     </>
   );

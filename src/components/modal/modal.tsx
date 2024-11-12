@@ -34,6 +34,8 @@ const ModalProduct: React.FC<ModalProps> = ({
   const [preco, setPreco] = useState<number | string>();
   const [idCategoria, setIdCategoria] = useState<number | string>();
 
+  const MAX_LENGTH = 50;
+
   useEffect(() => {
     if (edit && isModalOpen && productsInfo) {
       setNome(productsInfo.nome || "");
@@ -79,7 +81,7 @@ const ModalProduct: React.FC<ModalProps> = ({
         idProduto: productsInfo.idProduto,
       };
       const response = await editProduct(productObjectEdit);
-      if(response.status !== 204){
+      if (response.status !== 204) {
         message.error("Não foi possível atualizar o produto");
         return;
       }
@@ -87,7 +89,7 @@ const ModalProduct: React.FC<ModalProps> = ({
       await new Promise((resolve) => setTimeout(resolve, 200));
       setIsModalOpen(false);
       refreshProducts();
-      return
+      return;
     }
     const response = await addProduct(
       nome,
@@ -131,11 +133,12 @@ const ModalProduct: React.FC<ModalProps> = ({
         className={globalStyles.modal}
         onOk={handleProduct}
         footer={[
-          <>
+          <React.Fragment key="footer-buttons">
             <Button
               title="Ver todos os Produtos"
               id={globalStyles.allProducts}
               onClick={seeProducts}
+              key="Ver Produtos"
             >
               Ver todos os produtos
             </Button>
@@ -144,6 +147,7 @@ const ModalProduct: React.FC<ModalProps> = ({
               style={{ backgroundColor: "#7B0000", color: "#FFF" }}
               id={globalStyles.cancel}
               onClick={handleCancel}
+              key="Cancelar"
             >
               Cancelar
             </Button>
@@ -152,10 +156,11 @@ const ModalProduct: React.FC<ModalProps> = ({
               style={{ color: "#FFF" }}
               onClick={handleProduct}
               disabled={!isFormValid}
+              key="Confirmar"
             >
               Confirmar
             </Button>
-          </>,
+          </React.Fragment>,
         ]}
       >
         <div className={globalStyles.inputs}>
@@ -193,10 +198,12 @@ const ModalProduct: React.FC<ModalProps> = ({
           <textarea
             name="description"
             id="description"
-            maxLength={100}
+            maxLength={MAX_LENGTH}
             placeholder="Digite uma breve descrição do produto (Max = 50)"
             value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
+            onChange={(e) => {
+              setDescricao(e.target.value);
+            }}
           ></textarea>
         </div>
       </Modal>
