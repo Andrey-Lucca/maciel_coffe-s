@@ -1,33 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import globalStyles from "../../global/styles/globalStyles.module.scss";
-import { Input, Modal, Select, ConfigProvider, message } from "antd";
-import { addProduct } from "../../global/requisitions";
-type ModalProps = {
-  isModalOpen: boolean;
-  setIsModalOpen: (open: boolean) => void;
+import { Input, Modal, Select, ConfigProvider, message, Button } from "antd";
+import { addProduct, editProduct } from "../../global/utils";
+
+type ProductEdit = {
+  descricao: string;
+  foto: string;
+  nome: string;
+  preco: string;
+  token: string;
+  idProduto: string;
+  idCategoria: string;
 };
 
-type Products = {
-  nome: string;
-  idCategoria: Number;
-  foto: String;
-  preco: Number;
-  descricao: String;
+type ModalProps = {
+  isModalOpen: boolean;
+  edit?: boolean;
+  productsInfo?: ProductEdit | null;
+  setIsModalOpen: (open: boolean) => void;
+  refreshProducts: () => void;
 };
 
 const ModalProduct: React.FC<ModalProps> = ({
   isModalOpen,
   setIsModalOpen,
+  refreshProducts,
+  edit,
+  productsInfo,
 }) => {
   const [nome, setNome] = useState<string>("");
   const [foto, setFoto] = useState<string>("");
   const [descricao, setDescricao] = useState<string>("");
-  const [preco, setPreco] = useState<number>();
-  const [idCategoria, setIdCategoria] = useState<number>();
+  const [preco, setPreco] = useState<number | string>();
+  const [idCategoria, setIdCategoria] = useState<number | string>();
 
-  const handleCancel = (): void => {
-    setIsModalOpen(false);
-  };
+  useEffect(() => {
+    if (edit && isModalOpen && productsInfo) {
+      setNome(productsInfo.nome || "");
+      setFoto(productsInfo.foto || "");
+      setDescricao(productsInfo.descricao || "");
+      setPreco(productsInfo.preco ? parseFloat(productsInfo.preco) : undefined);
+      setIdCategoria(
+        productsInfo.idCategoria
+          ? parseInt(productsInfo.idCategoria)
+          : undefined
+      );
+    }
+  }, [isModalOpen, edit, productsInfo]);
 
   const setItemsEmpty = (): void => {
     setNome("");
@@ -37,29 +56,52 @@ const ModalProduct: React.FC<ModalProps> = ({
     setIdCategoria(undefined);
   };
 
+  const handleCancel = (): void => {
+    setItemsEmpty();
+    setIsModalOpen(false);
+  };
+
   const isFormValid =
     nome.trim() !== "" &&
-    foto.trim() !== "" &&
     descricao.trim() !== "" &&
     preco !== undefined &&
     idCategoria !== undefined;
 
   const handleProduct = async (): Promise<void> => {
-    const response = await addProduct(
-      nome,
-      foto,
-      descricao,
-      preco,
-      idCategoria
-    );
-    if (response.status !== 201) {
-      message.error("Algo deu errado ao adicionar seu produto");
-      return;
+    if (edit && productsInfo) {
+      const productObjectEdit = {
+        nome,
+        descricao,
+        foto,
+        preco: `${preco}`,
+        idCategoria:`${idCategoria}`,
+        token: productsInfo.token,
+        idProduto: productsInfo.idProduto
+      }
+      editProduct(productObjectEdit);
     }
-    message.success("Produto adicionado");
-    setItemsEmpty();
+    // const response = await addProduct(
+    //   nome,
+    //   foto,
+    //   descricao,
+    //   preco,
+    //   idCategoria
+    // );
+    // if (response.status !== 201) {
+    //   message.error("Algo deu errado ao adicionar seu produto");
+    //   return;
+    // }
+    // message.success("Produto adicionado");
+    // setItemsEmpty();
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // setIsModalOpen(false);
+    // refreshProducts();
+  };
+
+  const seeProducts = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsModalOpen(false);
+    refreshProducts();
   };
 
   return (
@@ -74,12 +116,38 @@ const ModalProduct: React.FC<ModalProps> = ({
       }}
     >
       <Modal
-        title="Adicionar Produto"
+        title={!edit ? "Adicionar Produto" : "Editar Produto"}
         open={isModalOpen}
         onCancel={handleCancel}
         className={globalStyles.modal}
         onOk={handleProduct}
-        okButtonProps={{ disabled: !isFormValid }}
+        footer={[
+          <>
+            <Button
+              title="Ver todos os Produtos"
+              id={globalStyles.allProducts}
+              onClick={seeProducts}
+            >
+              Ver todos os produtos
+            </Button>
+            <Button
+              title="Cancelar"
+              style={{ backgroundColor: "#7B0000", color: "#FFF" }}
+              id={globalStyles.cancel}
+              onClick={handleCancel}
+            >
+              Cancelar
+            </Button>
+            <Button
+              title="Confirmar"
+              style={{ color: "#FFF" }}
+              onClick={handleProduct}
+              disabled={!isFormValid}
+            >
+              Confirmar
+            </Button>
+          </>,
+        ]}
       >
         <div className={globalStyles.inputs}>
           <Input

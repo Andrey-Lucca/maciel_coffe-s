@@ -3,6 +3,21 @@
 .productsContainer {
   display: flex;
   flex-direction: column;
+  h1{
+    text-align: center;
+    color: #333333;
+  }
+}
+
+.loading{
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cakeContainer{
+  margin-top: 1rem;
 }
 
 .cardsContainer {

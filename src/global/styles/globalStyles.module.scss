@@ -13,7 +13,7 @@
 }
 
 .modal {
-  button:hover {
+  button:hover:not(#cancel) {
     border-color: $green !important;
     box-shadow: 0 0 0 2px rgba($green, 0.2);
   }
@@ -22,6 +22,12 @@
     &:hover {
       background-color: green !important;
     }
+  }
+  button#cancel:hover {
+    border-color: $red !important;
+  }
+  button#allProducts:hover {
+    color: #000 !important;
   }
   input {
     border-color: $green;

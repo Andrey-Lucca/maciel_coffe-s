@@ -1,37 +1,101 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./productsStyle.module.scss";
-import CardOld from "../cardOld/card";
 import CardProduct from "../card/card";
-import { Pagination } from "antd";
+import { Flex, Spin, ConfigProvider } from "antd";
+import { getProducts } from "../../global/utils";
+import { LoadingOutlined } from "@ant-design/icons";
 
-type ProductsProps = {
-  selectedScreen: string;
+type ProductsType = {
+  descricao: string;
+  foto: string;
+  nome: string;
+  preco: string;
+  token: string;
+  idProduto: string;
+  idCategoria: string;
 };
 
-const Products: React.FC<ProductsProps> = ({ selectedScreen }) => {
+type ProductsProps = {
+  loading: boolean;
+  products: ProductsType[];
+  refreshProducts: () => void;
+
+};
+
+const Products: React.FC<ProductsProps> = ({loading, products, refreshProducts}) => {
+
+  const handleProducts = async () => {
+    return await getProducts();
+  };
 
   return (
     <section className={styles.productsContainer}>
-      <div className={styles.cakeContainer}>
-        <h1>Bolos</h1>
-        <div className={styles.cardsContainer}>
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
+      {loading ? (
+        <div className={styles.loading}>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#556B2F",
+              },
+            }}
+          >
+            <Flex align="center" gap="middle">
+              <Spin size="large" indicator={<LoadingOutlined />} />
+            </Flex>
+          </ConfigProvider>
         </div>
-      </div>
-      <div className={styles.drinksContainer}>
-        <h1>Bebidas</h1>
-        <div className={styles.cardsContainer}>
-          <CardProduct descricao="Cacete Grande PEQUENO rande PEQUENO rande PEQUENO acete Grande PEQUENO rande PEQUENO rande PEQUENO PEQUENO PEQUENO PEQUENO PEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENOPEQUENO PEQUENO" />
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className={styles.cakeContainer}>
+            <h1>BOLOS</h1>
+            <div className={styles.cardsContainer}>
+              {products.map((product) => {
+                return (
+                  <>
+                    {product.idCategoria === "1" && (
+                      <CardProduct
+                        key={product.idProduto}
+                        idProduto={product.idProduto}
+                        nome={product.nome}
+                        descricao={product.descricao}
+                        preco={product.preco}
+                        foto={product.foto}
+                        token={product.token}
+                        idCategoria={product.idCategoria}
+                        refreshProducts={refreshProducts}
+                      />
+                    )}
+                  </>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.drinksContainer}>
+            <h1>BEBIDAS</h1>
+            <div className={styles.cardsContainer}>
+              {products.map((product) => {
+                return (
+                  <>
+                    {product.idCategoria === "2" && (
+                      <CardProduct
+                        key={product.idProduto}
+                        idProduto={product.idProduto}
+                        nome={product.nome}
+                        descricao={product.descricao}
+                        preco={product.preco}
+                        foto={product.foto}
+                        token={product.token}
+                        idCategoria={product.idCategoria}
+                        refreshProducts={refreshProducts}
+                      />
+                    )}
+                  </>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
     </section>
   );
 };
