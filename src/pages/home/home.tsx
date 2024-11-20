@@ -41,7 +41,7 @@ const Home: React.FC = () => {
     if (input === "") {
       setProducts(allProducts);
     } else {
-      const regex = new RegExp(`^${input}`, "i");
+      const regex = new RegExp(`${input}`, "i");
       const filteredProducts = allProducts.filter((product) =>
         regex.test(product.nome)
       );
