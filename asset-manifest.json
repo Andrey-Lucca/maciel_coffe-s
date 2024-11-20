@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/maciel_coffe-s/static/css/main.39b80b73.css",
-    "main.js": "/maciel_coffe-s/static/js/main.e4b33349.js",
+    "main.js": "/maciel_coffe-s/static/js/main.e32af246.js",
     "static/media/cafe.png": "/maciel_coffe-s/static/media/cafe.8ebd7b16980fea0176b3.png",
     "index.html": "/maciel_coffe-s/index.html",
     "main.39b80b73.css.map": "/maciel_coffe-s/static/css/main.39b80b73.css.map",
-    "main.e4b33349.js.map": "/maciel_coffe-s/static/js/main.e4b33349.js.map"
+    "main.e32af246.js.map": "/maciel_coffe-s/static/js/main.e32af246.js.map"
   },
   "entrypoints": [
     "static/css/main.39b80b73.css",
-    "static/js/main.e4b33349.js"
+    "static/js/main.e32af246.js"
   ]
 }
